@@ -14,31 +14,32 @@
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="Change GreenHub limit time" Height="400" Width="800" Loaded="MetroWindow_Loaded">
+        Title="更改 GreenHub 剩余时间" Height="400" Width="800" Loaded="MetroWindow_Loaded">
     <Grid>
         <StackPanel Orientation="Vertical" Grid.ColumnSpan="3">
             <TextBox
-        x:Name="materialTextBox21"
-        VerticalAlignment="Top" 
-        materialDesign:TextFieldAssist.HasOutlinedTextField="True"
-        materialDesign:TextFieldAssist.HasClearButton="True"
-        materialDesign:HintAssist.Hint="Enter a new limit time..."
-        Style="{StaticResource MaterialDesignOutlinedTextBox}" Margin="0,10,0,0"
-    />
+                x:Name="materialTextBox21"
+                VerticalAlignment="Top" 
+                materialDesign:TextFieldAssist.HasOutlinedTextField="True"
+                materialDesign:TextFieldAssist.HasClearButton="True"
+                materialDesign:HintAssist.Hint="输入新的剩余时间..."
+                Style="{StaticResource MaterialDesignOutlinedTextBox}" Margin="0,10,0,0"
+            />
 
 
             <Grid>
                 <ToggleButton x:Name="materialSwitch1" IsChecked="True" Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="10,0,717,0" HorizontalAlignment="Left"/>
-                <Label Content="Show message" Width="144" Margin="67,5,589,5" HorizontalAlignment="Left"/>
+                <Label Content="显示消息" Width="144" Margin="67,5,589,5" HorizontalAlignment="Left"/>
                 <Button
                     x:Name="changeButton"
-                    Content="Change!"
+                    Content="更改"
                     Style="{StaticResource MaterialDesignRaisedDarkButton}" 
                     Click="Button_Click"
                     HorizontalAlignment="Right"
                 />
                 <Button
-                    Content="Download GreenHub Installer"
+                    x:Name="downloadButton"
+                    Content="下载 GreenHub 安装包"
                     Style="{StaticResource MaterialDesignRaisedDarkButton}" 
                     Click="Button_Click_1" Margin="274,0,0,0" HorizontalAlignment="Left"
                 />
@@ -46,8 +47,8 @@
             <materialDesign:Card Height="208" Width="784">
                 <StackPanel>
                     <Label Content="关于" HorizontalAlignment="Left" Margin="23,23,0,0" VerticalAlignment="Top" FontSize="22"/>
-                    <Label Content="Author:落墨同学" Width="657"></Label>
-                    <Label Content="Contant us:luomotongxue@gmail.com" Width="657"></Label>
+                    <Label Content="作者:落墨同学" Width="657"></Label>
+                    <Label Content="联系我们:luomotongxue@gmail.com    QQ:1453325399" Width="657"></Label>
                     <Label Content="仅供学术使用" Width="716" FontSize="36"/>
                     <Label Content="使用本软件代表你同意承担全部责任" Width="716" FontSize="36"/>
                 </StackPanel>

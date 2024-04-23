@@ -22,8 +22,6 @@ namespace Change_GreenHub_time_limit
     /// </summary>
     public partial class MainWindow : MahApps.Metro.Controls.MetroWindow
     {
-        bool isDownloading = false;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -38,18 +36,18 @@ namespace Change_GreenHub_time_limit
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            int time = 0;
+            long time = 0;
 
             try
             {
-                time = Int32.Parse(materialTextBox21.Text);
+                time = Int64.Parse(materialTextBox21.Text);
             }
             catch
             {
                 if (materialSwitch1.IsChecked.HasValue && materialSwitch1.IsChecked.Value)
                 {
                     snackBar.MessageQueue?.Enqueue(
-                        "Please input a valid number!",
+                        "请输入有效的数字!",
                         null,
                         null,
                         null,
@@ -74,7 +72,7 @@ namespace Change_GreenHub_time_limit
                 if (materialSwitch1.IsChecked.HasValue && materialSwitch1.IsChecked.Value)
                 {
                     snackBar.MessageQueue?.Enqueue(
-                        "Failed to open file - ",
+                        "无法打开文件 - " + jsFilePath,
                         null,
                         null,
                         null,
@@ -100,7 +98,7 @@ namespace Change_GreenHub_time_limit
             if (materialSwitch1.IsChecked.HasValue && materialSwitch1.IsChecked.Value)
             {
                 snackBar.MessageQueue?.Enqueue(
-                    "Successfully!",
+                    "完成！刷新节点后生效",
                     null,
                     null,
                     null,
@@ -150,7 +148,7 @@ namespace Change_GreenHub_time_limit
                         catch 
                         {
                             snackBar.MessageQueue?.Enqueue(
-                                $"Download failed! tried to download file - {destinationPath}",
+                                $"下载失败！ 尝试下载到路径 {destinationPath}",
                                 null,
                                 null,
                                 null,
@@ -165,41 +163,42 @@ namespace Change_GreenHub_time_limit
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (isDownloading)
-            {
-                return ;
-            }
 #pragma warning disable CS8604 // 引用类型参数可能为 null。
-            string downloadPath = Path.Combine(Path.GetDirectoryName(path: Assembly.GetExecutingAssembly().Location), "GreenHub_installer.exe");
-            if (File.Exists(downloadPath))
+            string downloadPath = Path.Combine(
+                Path.GetDirectoryName(path: Assembly.GetExecutingAssembly().Location), 
+                "GreenHub_installer.exe");   
+            if (File.Exists(downloadPath) )
             {
-                snackBar.MessageQueue?.Enqueue(
-                    $"File already exist - {downloadPath}",
+                if (materialSwitch1.IsChecked.HasValue && materialSwitch1.IsChecked.Value)
+                {
+                    snackBar.MessageQueue?.Enqueue(
+                    $"文件存在 - {downloadPath}",
                     null,
                     null,
                     null,
                     false,
                     true,
                     TimeSpan.FromSeconds(2.0));
+                }
+                
                 return;
             }
 
-            isDownloading = true;
+            downloadButton.IsEnabled = false;
             changeButton.IsEnabled = false;
-            snackBarMessage.Content = "Starting Download..";
+            snackBarMessage.Content = "开始下载...";
             var progress = new Progress<DownloadProgress>(report =>
             {
                 if (materialSwitch1.IsChecked.HasValue && materialSwitch1.IsChecked.Value)
                 {
-                    snackBarMessage.Content = $"Downloading... {report.ProgressPercentage.ToString("F2")}%";
+                    snackBarMessage.Content = $"下载中... {report.ProgressPercentage.ToString("F2")}%";
                     snackBar.IsActive = true;
                     if (report.ProgressPercentage == 100)
                     {
                         snackBar.IsActive = false;
-                        isDownloading = false;
-                        changeButton.IsEnabled = true;
+                        
                         snackBar.MessageQueue?.Enqueue(
-                            $"Download completed! file - {downloadPath}",
+                            $"下载完成！ 文件 - {downloadPath}",
                             null,
                             null,
                             null,
@@ -207,10 +206,15 @@ namespace Change_GreenHub_time_limit
                             true,
                             TimeSpan.FromSeconds(2.0));
                     }
+
+                    downloadButton.IsEnabled = true;
+                    changeButton.IsEnabled = true;
                 }
             });
 
-            await DownloadFileAsync("https://kr042001.westmgreen.com/download/GreenHub%2520Setup%25202.2.0.exe", downloadPath, progress);
+            await DownloadFileAsync("https://kr042001.westmgreen.com/download/GreenHub%2520Setup%25202.2.0.exe", 
+                downloadPath, 
+                progress);
 #pragma warning restore CS8604 // 引用类型参数可能为 null。     
         }
 
